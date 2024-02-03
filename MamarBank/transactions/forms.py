@@ -19,12 +19,9 @@ class TransactionForm(forms.ModelForm):
         return super().save()       # save kora
     
 
-# class TransferForm(forms.ModelForm):
-#     class Meta:
-#         model = Transaction
-#         fields = ["account_number", "amount", "transaction_type"]
-    
-# class TransferForm(TransactionForm):
+class TransferForm(forms.Form):
+    amount = forms.DecimalField(max_digits=12, decimal_places=2)
+    account_number = forms.IntegerField()
 
     
     

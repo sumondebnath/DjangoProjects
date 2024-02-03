@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.views.generic import FormView
 from Accounts.forms import UserRegistrationForm, UpdateUserForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views import View
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib import messages
+from transactions.views import send_transaction_mail
 
 # Create your views here.
 class UserRegistrationView(FormView):
@@ -49,3 +52,19 @@ class UserAccountUpdate(View):
             form.save()
             return redirect("home")
         return render(request, self.template_name, {"form":form})
+    
+def ChangePassword(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = SetPasswordForm(user=request.user, data = request.POST)
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user)
+                messages.success(request, "Your Password Changed Successfully.")
+                send_transaction_mail(request.user, None, "Password Change", "Accounts/password_mail.html")
+                return redirect("home")
+        else:
+            form = SetPasswordForm(user=request.user)
+        return render(request, "Accounts/password.html", {"form":form})
+    else:
+        return redirect("log_in")

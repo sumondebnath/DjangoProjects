@@ -1,0 +1,13 @@
+.vscode
+.cph/
+.vscode/
+*.txt
+*.exe
+*.bin
+djEnv
+djEnv/
+/djEnv
+/.venv
+.venv/
+MamarBank/.env/
+.env/
