@@ -9,7 +9,7 @@ djEnv/
 /djEnv
 /.venv
 .venv/
-/MamarBank/.env/
+MamarBank/.env
 .env/
 .venv
 .env
